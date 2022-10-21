@@ -21,6 +21,7 @@ void SceneMain::init()
 	m_player.setHandle(m_hPlayerGraphic);
 	m_player.init();
 
+	m_enemy.setMain(this);
 	m_enemy.setHandle(m_hPlayerGraphic);
 	m_enemy.init();
 
@@ -45,13 +46,14 @@ void SceneMain::update()
 	for (auto& shot : m_shot)
 	{
 		shot.update();
+		if (shot.isCol(m_enemy))
+		{
+			//当たっている場合の処理
+			m_enemy.setExist(false);
+			//shot.setExist(false);
+		}
 	}
 
-	// キー入力処理
-	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	if (padState & PAD_INPUT_1)
-	{
-	}
 }
 
 // 毎フレームの描画
@@ -66,13 +68,19 @@ void SceneMain::draw()
 	}
 }
 
-bool SceneMain::createShot(Vec2 pos)
+bool SceneMain::createShot(Vec2 pos,bool isPlayer)
 {
 	for (auto& shot : m_shot)
 	{
 		if (!shot.isExist())
 		{
 			shot.start(pos);
+			Vec2 vec{ 8.0f,0.0f };
+			if (!isPlayer)
+			{
+				vec.x *= -1.0f;
+			}
+			shot.setVec(vec);
 			return true;
 		}
 	}
