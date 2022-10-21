@@ -1,12 +1,16 @@
 #pragma once
 
 #include "Vec2.h"
+class SceneMain;
 
 class Player
 {
 public:
 	Player();
 	virtual ~Player();
+
+	//SceneMainに値を設定
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	// グラフィックデータ設定
 	void setHandle(int handle) { m_handle = handle; }
@@ -23,6 +27,9 @@ public:
 	Vec2 getPos() const { return m_pos; }
 
 private:
+	//シーンメインのポインタ
+	SceneMain* m_pMain;
+
 	int m_handle;
 
 	// 表示位置
