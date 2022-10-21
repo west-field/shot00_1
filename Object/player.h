@@ -32,6 +32,8 @@ private:
 
 	int m_handle;
 
+	//ショットの発生間隔
+	int m_shotInterval;
 	// 表示位置
 	Vec2 m_pos;
 	// 移動
