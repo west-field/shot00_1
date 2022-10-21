@@ -1,14 +1,18 @@
 #include "DxLib.h"
 #include "SceneMain.h"
+#include <cassert>
 
-SceneMain::SceneMain()
+SceneMain::SceneMain() :
+	m_hPlayerGraphic(-1),
+	m_hShotGraphic(-1),
+	m_player(),
+	m_enemy(),
+	m_shot()
 {
-	m_hPlayerGraphic = -1;
-	m_hShotGraphic = -1;
 }
 SceneMain::~SceneMain()
 {
-
+	m_shot.resize(kShotMax);
 }
 
 // ‰Šú‰»
@@ -50,7 +54,13 @@ void SceneMain::update()
 		{
 			//“–‚½‚Á‚Ä‚¢‚éê‡‚Ìˆ—
 			m_enemy.setExist(false);
-			//shot.setExist(false);
+			shot.setExist(false);
+		}
+		if (shot.isCol(m_player))
+		{
+			//“–‚½‚Á‚Ä‚¢‚éê‡‚Ìˆ—
+			m_player.setExist(false);
+			shot.setExist(false);
 		}
 	}
 
@@ -81,6 +91,8 @@ bool SceneMain::createShot(Vec2 pos,bool isPlayer)
 				vec.x *= -1.0f;
 			}
 			shot.setVec(vec);
+			shot.setPlayerShot(isPlayer);
+
 			return true;
 		}
 	}

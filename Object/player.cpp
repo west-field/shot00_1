@@ -18,14 +18,22 @@ Player::Player() :
 	m_pMain(nullptr),
 	m_handle(-1),
 	m_shotInterval(0),
+	m_isExist(false),
 	m_pos(),
-	m_vec()
+	m_vec(),
+	m_graphSize()
 {
 }
 
 Player::~Player()
 {
 	
+}
+
+void Player::setHandle(int handle) 
+{
+	m_handle = handle;
+	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
 }
 
 void Player::init()
@@ -35,11 +43,14 @@ void Player::init()
 	m_vec.x = 0.0f;
 	m_vec.y = 0.0f;
 
+	m_isExist = true;
+
 	m_shotInterval = kShotInterval;
 }
 
 void Player::update()
 {
+	if (!m_isExist)	return;
 	m_shotInterval--;
 	if (m_shotInterval < 0)	m_shotInterval = 0;
 
@@ -88,5 +99,6 @@ void Player::update()
 
 void Player::draw()
 {
+	if (!m_isExist)	return;
 	DrawGraphF(m_pos.x, m_pos.y, m_handle, true);
 }

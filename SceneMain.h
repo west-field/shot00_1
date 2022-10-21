@@ -3,6 +3,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "shot.h"
+#include <vector>
 
 class SceneMain
 {
@@ -38,5 +39,6 @@ private:
 	//エネミー
 	Enemy m_enemy;
 	// ショット
-	Shot m_shot[kShotMax];
+//	Shot m_shot[kShotMax];
+	std::vector<Shot> m_shot;
 };

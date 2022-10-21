@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "shot.h"
 #include "game.h"
+#include "player.h"
 #include "enemy.h"
 
 
@@ -10,7 +11,8 @@ Shot::Shot() :
 	m_isExist(false),
 	m_pos(100.0f,100.0f),
 	m_vec(8.0f,0.0f),
-	m_graphSize()
+	m_graphSize(),
+	m_isPlayerShot(false)
 {
 }
 
@@ -56,6 +58,9 @@ void Shot::draw()
 
 bool Shot::isCol(Enemy& enemy)
 {
+	//“G‚ÌŒ‚‚Á‚½’e‚É‚Í“–‚½‚ç‚È‚¢
+	if (!m_isPlayerShot)	return false;
+
 	//‘¶Ý‚µ‚È‚¢“GA‘¶Ý‚µ‚È‚¢‚½‚Ü‚É‚Í‰½‚à“–‚½‚ç‚È‚¢
 	if (!m_isExist)	return false;
 	if (!enemy.isExist())	return false;
@@ -83,6 +88,42 @@ bool Shot::isCol(Enemy& enemy)
 	if (enemyTop > shotBottom)	return false;
 	if (enemyRight < shotLeft)	return false;
 	if (enemyBottom < shotTop)	return false;
+
+	return true;
+}
+
+bool Shot::isCol(Player& player)
+{
+	//Ž©•ª‚ÌŒ‚‚Á‚½’e‚É‚Í“–‚½‚ç‚È‚¢
+	if (m_isPlayerShot)	return false;
+
+	//‘¶Ý‚µ‚È‚¢Ž©•ªA‘¶Ý‚µ‚È‚¢‚½‚Ü‚É‚Í‰½‚à“–‚½‚ç‚È‚¢
+	if (!m_isExist)	return false;
+	if (!player.isExist())	return false;
+	/*
+	float shotWidth = 0;
+	float shotHeight = 0;
+	GetGraphSizeF(m_handle, &shotWidth, &shotHeight);
+	*/
+	float shotLeft = m_pos.x;
+	float shotTop = m_pos.y;
+	float shotRight = m_pos.x + m_graphSize.x;
+	float shotBottom = m_pos.y + m_graphSize.y;
+	/*
+		float enemyLeft		= enemy.getPos().x;
+		float enemyTop		= enemy.getPos().y;
+		float enemyRight	= enemy.getPos().x + enemy.getColWidth();
+		float enemyBottom	= enemy.getPos().y + enemy.getColHeight();
+	*/
+	float playerLeft = player.getPos().x;
+	float playerTop = player.getPos().y;
+	float playerRight = player.getPos().x + player.getColSize().x;
+	float playerBottom = player.getPos().y + player.getColSize().y;
+
+	if (playerLeft > shotRight)	return false;
+	if (playerTop > shotBottom)	return false;
+	if (playerRight < shotLeft)	return false;
+	if (playerBottom < shotTop)	return false;
 
 	return true;
 }

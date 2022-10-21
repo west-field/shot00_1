@@ -1,6 +1,7 @@
 #pragma once
 #include "Vec2.h"
 class Enemy;
+class Player;
 
 class Shot
 {
@@ -25,8 +26,13 @@ public:
 	bool isExist() const { return m_isExist; }
 	void setExist(bool isExist) { m_isExist = isExist; }
 
+	//プレイヤーが撃った弾か
+	bool isPlayerShot()	const { return m_isPlayerShot; }
+	void setPlayerShot(bool isPlayerShot) { m_isPlayerShot = isPlayerShot; }
+	
 	//敵との当たり判定
 	bool isCol(Enemy& enemy);
+	bool isCol(Player& player);
 
 private:
 	// グラフィックハンドル
@@ -39,4 +45,6 @@ private:
 	Vec2 m_vec;
 	//グラフィックサイズ
 	Vec2 m_graphSize;
+	//プレイヤーが撃った弾か
+	bool m_isPlayerShot;
 };
